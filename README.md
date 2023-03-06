@@ -54,4 +54,4 @@ N/A
 
 MIT License according to the LICENSE file in the repo
 
-## REsources
+## Resources
