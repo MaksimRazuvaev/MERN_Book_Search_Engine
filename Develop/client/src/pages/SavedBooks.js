@@ -7,17 +7,26 @@ import {
   Col
 } from 'react-bootstrap';
 
-import { getMe, deleteBook } from '../utils/API';
+// import { getMe, deleteBook } from '../utils/API';
+import { useQuery, useMutation } from '@apollo/client';
+import { GET_ME, REMOVE_BOOK } from '../utils/queries';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const [userData, setUserData] = useState({});
+  // const [userData, setUserData] = useState({});
 
   // use this to determine if `useEffect()` hook needs to run again
-  const userDataLength = Object.keys(userData).length;
+  // const userDataLength = Object.keys(userData).length;
 
-  useEffect(() => {
+
+  const { loading, data } = useQuery(GET_ME);
+  const [removeBook] = useMutation(REMOVE_BOOK);
+
+  const userData = data?.me || {};
+
+
+  /*useEffect(() => {
     const getUserData = async () => {
       try {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -40,7 +49,7 @@ const SavedBooks = () => {
     };
 
     getUserData();
-  }, [userDataLength]);
+  }, [userDataLength]);*/
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -51,6 +60,28 @@ const SavedBooks = () => {
     }
 
     try {
+      const { data } = await removeBook({
+        variables: { bookId }
+      });
+
+      // upon success, remove book's id from localStorage
+      removeBookId(bookId);
+
+      if (data?.removeBook) {
+        const updatedUserData = { ...userData };
+        updatedUserData.savedBooks = updatedUserData.savedBooks.filter((savedBook) => savedBook.bookId !== bookId);
+        // update user data in the cache to remove deleted book
+        cache.writeQuery({
+          query: GET_ME,
+          data: { me: updatedUserData }
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+
+
+    /*try {
       const response = await deleteBook(bookId, token);
 
       if (!response.ok) {
@@ -63,7 +94,7 @@ const SavedBooks = () => {
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
-    }
+    }*/
   };
 
   // if data isn't here yet, say so
