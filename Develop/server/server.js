@@ -1,5 +1,7 @@
 const express = require('express');
 const path = require('path');
+const { ApolloServer } = require('apollo-server-express');
+const { typeDefs, resolvers, context } = require('./schema');
 const db = require('./config/connection');
 const routes = require('./routes');
 
@@ -15,6 +17,14 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use(routes);
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context,
+});
+
+server.applyMiddleware({ app });
 
 db.once('open', () => {
   app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
