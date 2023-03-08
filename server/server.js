@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { ApolloServer } = require('apollo-server-express');
-const { typeDefs, resolvers, context } = require('./schema');
+const { typeDefs, resolvers, context } = require('./schemas');
 const db = require('./config/connection');
 const routes = require('./routes');
 
@@ -24,8 +24,16 @@ const server = new ApolloServer({
   context,
 });
 
-server.applyMiddleware({ app });
+// server.applyMiddleware({ app });
+// Another type of typeDefs 3/7/23 MR
+const startAppoloServer = async (typeDefs, resolvers) => {
+  await server.start();
+  server.applyMiddleware({ app })
 
-db.once('open', () => {
-  app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
-});
+  db.once('open', () => {
+    app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
+  });
+  
+}
+
+startAppoloServer( typeDefs, resolvers );

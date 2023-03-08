@@ -8,8 +8,9 @@ import {
 } from 'react-bootstrap';
 
 // import { getMe, deleteBook } from '../utils/API';
-import { useQuery, useMutation } from '@apollo/client';
-import { GET_ME, REMOVE_BOOK } from '../utils/queries';
+import { useQuery, useMutation, useApolloClient } from '@apollo/client';
+import { GET_ME } from '../utils/queries';
+import { REMOVE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
@@ -22,6 +23,8 @@ const SavedBooks = () => {
 
   const { loading, data } = useQuery(GET_ME);
   const [removeBook] = useMutation(REMOVE_BOOK);
+  // get the client object
+  const client = useApolloClient(); 
 
   const userData = data?.me || {};
 
@@ -71,7 +74,7 @@ const SavedBooks = () => {
         const updatedUserData = { ...userData };
         updatedUserData.savedBooks = updatedUserData.savedBooks.filter((savedBook) => savedBook.bookId !== bookId);
         // update user data in the cache to remove deleted book
-        cache.writeQuery({
+        client.writeQuery({
           query: GET_ME,
           data: { me: updatedUserData }
         });
@@ -98,7 +101,7 @@ const SavedBooks = () => {
   };
 
   // if data isn't here yet, say so
-  if (!userDataLength) {
+  if (loading) {
     return <h2>LOADING...</h2>;
   }
 

@@ -55,3 +55,5 @@ N/A
 MIT License according to the LICENSE file in the repo
 
 ## Resources
+- https://stackoverflow.com/questions/63124161/attempted-import-error-switch-is-not-exported-from-react-router-dom
+- 

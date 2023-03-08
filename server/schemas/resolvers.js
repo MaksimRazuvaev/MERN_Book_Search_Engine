@@ -10,13 +10,13 @@ const resolvers = {
       }
       throw new Error('Not logged in!');
     },
-    user: async (parent, { username }) => {
-      const user = await User.findOne({ username }).populate('savedBooks');
-      if (!user) {
-        throw new Error("Can't find user with that username!");
-      }
-      return user;
-    },
+    // user: async (parent, { username }) => {
+    //   const user = await User.findOne({ username }).populate('savedBooks');
+    //   if (!user) {
+    //     throw new Error("Can't find user with that username!");
+    //   }
+    //   return user;
+    // },
   },
   Mutation: {
     addUser: async (parent, { username, email, password }) => {
