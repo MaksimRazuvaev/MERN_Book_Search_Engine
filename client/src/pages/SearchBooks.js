@@ -56,6 +56,8 @@ const SearchBooks = () => {
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || '',
+        // 3/12 MR
+        link: book.volumeInfo.link,
       }));
 
       setSearchedBooks(bookData);
@@ -107,7 +109,7 @@ const SearchBooks = () => {
         <Container>
           <h1>Search for Books!</h1>
           <Form onSubmit={handleFormSubmit}>
-            <Form.Row>
+            <Row>
               <Col xs={12} md={8}>
                 <Form.Control
                   name='searchInput'
@@ -123,7 +125,7 @@ const SearchBooks = () => {
                   Submit Search
                 </Button>
               </Col>
-            </Form.Row>
+            </Row>
           </Form>
         </Container>
       </div>
