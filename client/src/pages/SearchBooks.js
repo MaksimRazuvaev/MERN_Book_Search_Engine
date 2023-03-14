@@ -49,12 +49,13 @@ const SearchBooks = () => {
       }
 
       const { items } = await response.json();
+      console.log(items);
 
       const bookData = items.map((book) => ({
         bookId: book.id,
         authors: book.volumeInfo.authors || ['No author to display'],
         title: book.volumeInfo.title,
-        description: book.volumeInfo.description,
+        description: book.volumeInfo.description != null ? book.volumeInfo.description: " ",
         image: book.volumeInfo.imageLinks?.thumbnail || '',
         // 3/12 MR
         link: book.volumeInfo.link,
@@ -97,7 +98,9 @@ const SearchBooks = () => {
       });
   
       // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, data.saveBook.savedBooks[0].bookId]);
+      console.log(bookToSave);
+      console.log(data);
+      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.error(err);
     }
