@@ -30,7 +30,7 @@ https://my-mern-book-search.herokuapp.com/
 
 ## Wed Site View
 
-![main_page](/src/assets/images/main_page.PNG)
+![main_page](/client/src/images/main_page.PNG)
 
 ## Technologies
 
