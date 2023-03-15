@@ -26,10 +26,11 @@ User is logged out of the site and presented with a menu with the options Search
 
 ## Link to deployed application
 
-
+https://my-mern-book-search.herokuapp.com/
 
 ## Wed Site View
 
+![main_page](/src/assets/images/main_page.PNG)
 
 ## Technologies
 
